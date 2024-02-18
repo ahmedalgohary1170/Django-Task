@@ -13,24 +13,25 @@
     <div class="container">
         <div class="card">
            
-            <h5 class="text-center">{{ post.title }}</h5>
-            <p class="text-center">{{ post.content }}</p>
-            <img src="{{ post.imag.url }}" width="650px" height="500px"class="mx-auto" alt="">
-            <h4>Comments({{comments|length}})</h4>
+            <h5 class="text-center">{{ data.title }}</h5>
+            <p class="text-center">{{ data.content }}</p>
+            <img src="{{ data.imag.url }}" width="650px" height="500px"class="mx-auto" alt="">
+            <h4>Comments({{coments|length}})</h4>
            
             
             <ul>
-                {% for comment in comments  %}
+                {% for comment in coments  %}
                     <li>{{comment.user}}-{{comment.comment}}</li>
                 {%empty%}
                     <li>NO Comment In This Post</li>
                 {% endfor %}
             </ul>
             <h4>Add New Commint</h4>
-            <form method="post">
+            
+            <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{form}}
-                {% bootstrap_button button_type="submit" content="add comment" %}
+                {% bootstrap_form form %}
+                {% bootstrap_button button_type="submit" content="Add Comment" %}
             </form>
     </div>
     </div>

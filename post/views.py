@@ -6,25 +6,27 @@ from .forms import CommentForm
 class PostList(ListView):
     model =Post
 
-class PostDetail(DetailView):
-    model = Post
-
-    def get_context_data(self, **kwargs ):
-        context = super().get_context_data(**kwargs)
-        context["comments"] = Comment.objects.filter(post=self.get_object())
-      
-        return context
 
 
 
-def my_view(request):
+def add_comment(request , pk):
+    data= Post.objects.get(id=pk)
+    coments=Comment.objects.filter(post=data)
     if request.method == 'POST':
         form =CommentForm(request.POST,request.FILES)
         if form.is_valid():
             myform=form.save(commit=False)
-            myform.author = request.user
+            myform.user = request.user
+            myform.post=data
             myform.save()
+        return redirect(f'/{pk}')
             
     else:
+        
         form = CommentForm()
-    return render(request, 'post/post_form.html', {'form': form})
+    context = {
+        'data': data,
+        'form': form,
+        'coments': coments
+    }
+    return render(request, 'post/post_detail.html', context)
