@@ -16,15 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from post.views import PostList ,add_comment
+from post.views import PostList ,AddCommentView
 from django.conf import settings
 from django.conf.urls.static import static
+from post.api import PostListAPI,PostDetailAPI
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('<int:pk>',add_comment),
+    path('<int:pk>',AddCommentView.as_view()),
     path('',PostList.as_view() ),
+
+
+
+    
+    path('api',PostListAPI.as_view()),
+    path('api/<int:pk>',PostDetailAPI.as_view()),
 
 ]
 
